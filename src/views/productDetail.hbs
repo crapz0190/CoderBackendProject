@@ -1,0 +1,30 @@
+<form action="/api/carts/{{idCart}}/product/{{_id}}?_method=PUT" method="POST">
+  <div class="border border-slate-500 w-2/6 p-2 mx-auto mt-20">
+    <div class="p-5">
+      <ul>
+        {{#each thumbnails}}
+        <li class="inline-block">
+          <img class="w-32" src="{{this}}" alt="{{title}} Thumbnail">
+        </li>
+        {{/each}}
+      </ul>
+      <h2 class="uppercase font-bold">{{ title }}</h2>
+      <p>{{ description }}</p>
+      <p class="font-bold">Precio: ${{ price }}</p>
+      <p class="font-bold">Cantidad: {{ stock }}</p>
+      <p class="font-bold">Categoría: {{ category }}</p>
+    </div>
+    <div class="flex flex-wrap justify-center gap-10">
+      <input type="hidden" name="_method" value="PUT">
+      <input class="text-center w-4/12 h-14 border border-2 rounded-md p-2 duration-300 bg-slate-100 font-bold"
+        type="number" name="quantity" min="1" value="1">
+
+      <button type="submit"
+        class="text-white text-center w-full h-14 border border-2 rounded-md p-2 duration-300 bg-red-900 hover:bg-slate-600">
+        Agregar al Carrito
+      </button>
+      <a class="text-white text-center w-full h-14 border border-2 rounded-md p-2 duration-300 bg-slate-900 hover:bg-slate-600"
+        href="/products">Volver al inicio</a>
+    </div>
+  </div>
+</form>

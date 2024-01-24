@@ -1,0 +1,4 @@
+node_modules
+.eslintrc.cjs
+src/.env.development
+src/.env.production

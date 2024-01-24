@@ -1,0 +1,40 @@
+{
+  message: 'Probando level fatal',
+  level: 'fatal',
+  timestamp: '2024-01-15T18:51:06.756Z'
+}
+{
+  message: 'Probando level error desde development',
+  level: 'error',
+  timestamp: '2024-01-15T18:51:06.758Z'
+}
+{
+  message: 'Probando level fatal',
+  level: 'fatal',
+  timestamp: '2024-01-15T18:55:29.799Z'
+}
+{
+  message: 'Development: level error',
+  level: 'error',
+  timestamp: '2024-01-15T18:55:29.802Z'
+}
+{
+  message: 'Development level fatal',
+  level: 'fatal',
+  timestamp: '2024-01-15T18:55:52.753Z'
+}
+{
+  message: 'Development: level error',
+  level: 'error',
+  timestamp: '2024-01-15T18:55:52.755Z'
+}
+{
+  message: 'Level fatal',
+  level: 'fatal',
+  timestamp: '2024-01-15T18:58:15.228Z'
+}
+{
+  message: 'Level error',
+  level: 'error',
+  timestamp: '2024-01-15T18:58:15.230Z'
+}

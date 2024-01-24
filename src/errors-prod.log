@@ -1,0 +1,20 @@
+{
+  message: 'Probando level fatal desde production',
+  level: 'fatal',
+  timestamp: '2024-01-14T01:46:41.498Z'
+}
+{
+  message: 'Probando level error desde production',
+  level: 'error',
+  timestamp: '2024-01-14T01:46:41.502Z'
+}
+{
+  message: 'Level fatal',
+  level: 'fatal',
+  timestamp: '2024-01-15T18:58:46.227Z'
+}
+{
+  message: 'Level error',
+  level: 'error',
+  timestamp: '2024-01-15T18:58:46.230Z'
+}

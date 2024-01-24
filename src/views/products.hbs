@@ -1,0 +1,37 @@
+{{> profile}}
+
+<section>
+  <div id="listProducts" class="bg-slate-100 w-full mt-8 px-6 m-auto p-2 flex flex-wrap items-center justify-center">
+    {{#each payload}}
+    <div class="w-3/12 h-full flex flex-wrap items-center justify-between border-2 rounded-md px-4 mx-2 mt-4 bg-white">
+      {{#if firstThumbnail}}
+      <div class="w-full h-60 pt-2 rounded-t-lg">
+        <img class="w-full h-full bg-cover bg-center rounded-t-lg" src="{{firstThumbnail}}" alt="imagen-1">
+      </div>
+      {{/if}}
+      <ul class="p-4">
+        <li class="mb-5"><span>{{title}}</span></li>
+        <li class="text-lg font-bold"><span>${{price}}</span></li>
+      </ul>
+      <div class="mx-auto flex flex-wrap items-center justify-center gap-3 pb-4">
+        <a class="inline-block text-white text-center w-full h-14 border border-2 rounded-md p-2 pt-3 duration-300 bg-slate-900 hover:bg-slate-600"
+          href="/product-detail/{{ _id }}">Ver detalles</a>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  <div class="flex justify-center items-center mb-10 h-10 text-center">
+    {{#if hasPrevPage}}
+    <a href={{prevLink}}>
+      < <span class="border border-2 rounded p-1 text-sky-600 hover:text-sky-900 duration-300">Anterior</span>
+    </a>
+    {{/if}}
+    &nbsp;
+    {{page}} de {{totalPages}}
+    &nbsp;
+    {{#if hasNextPage}}
+    <a href={{nextLink}}><span
+        class="border border-2 rounded p-1 text-sky-600 hover:text-sky-900 duration-300">Siguiente</span> ></a>
+    {{/if}}
+  </div>
+</section>

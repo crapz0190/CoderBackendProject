@@ -1,0 +1,39 @@
+<section class="w-4/5 m-auto mt-40">
+  {{#if products.length}}
+  <ul class="border-2">
+    {{#each products}}
+    <form action="/api/carts/{{idCart}}/product/{{id}}?_method=DELETE" method="POST"
+      onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
+      <table class="w-full text-left">
+        <tr>
+          <th class="w-7 border border-slate-300">
+            <img class="w-full m-auto" src="{{thumbnail}}" alt="{{title}} Image">
+          </th>
+          <th class="w-80 border border-slate-300">{{id}}</th>
+          <th class="w-80 border border-slate-300">{{title}}</th>
+          <th class="w-20 border border-slate-300 text-center">{{quantity}}</th>
+          <th class="w-20 border border-slate-300">$ {{price}}</th>
+          <th class="w-20 border border-slate-300">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit"
+              class="text-white text-center w-full h-14 border border-2 rounded-md p-2 duration-300 bg-red-900 hover:bg-slate-600">Eliminar</button>
+          </th>
+        </tr>
+      </table>
+    </form>
+    {{/each}}
+  </ul>
+
+  <form class="w-full" action="/api/carts/{{cartID}}/purchase?_method=POST" method="POST" onsubmit="return confirm('¿Confirmás tú compra?');">
+    <input type="hidden" name="_method" value="POST">
+    <button type="submit"
+      class="inline-block text-white text-center w-full h-14 border border-2 rounded-md p-2 pt-3 duration-300 bg-slate-900 hover:bg-slate-600">Finalizar
+      compra</button>
+  </form>
+  {{else}}
+  <p>No hay productos en el carrito.</p>
+  {{/if}}
+</section>
+
+<a class="block text-white text-center w-2/12 h-14 mx-auto mt-5 border border-2 rounded-md p-2 duration-300 bg-slate-900 hover:bg-slate-600"
+  href="/products">Volver al inicio</a>

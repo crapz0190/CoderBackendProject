@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{title}}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="relative">
+  <header class="w-full h-20 py-4 px-10 bg-zinc-700 rounded-b-lg fixed top-0 flex items-center justify-between gap-4">
+    <span class="uppercase text-stone-200 font-bold">Handlebars</span>
+
+    <section class="absolute top-4 right-2">
+      <nav class="flex text-stone-200">
+        <ul class="text-sm flex items-center justify-between gap-14">
+          {{#if roleUser}}
+          <li class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"><a href="/products">Productos</a></li>
+          <li class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"><a href="/messages-form">mensajes</a></li>
+          <a class="inline-block w-32 h-10 px-2 py-2" href="/carts/{{cart}}"><img class="w-10 absolute bottom-1"
+              src="/images/carrito.png" alt="cart"></a>
+          {{/if}}
+        </ul>
+      </nav>
+
+      <nav class="flex text-stone-200 list-none">
+        <ul class="text-sm flex items-center justify-between gap-14">
+          {{#if roleAdmin}}
+          <li class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"><a href="/products">Productos</a></li>
+          {{!-- <li class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"><a href="/messages-form">mensajes</a></li> --}}
+          <li class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"><a href="/product-upload-form">Carga de
+              productos</a></li>
+          <li class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"><a href="/update-product">Modificacion de
+              productos</a></li>
+          {{!-- <a class="inline-block w-32 h-10 px-2 py-2" href="/carts/{{cart}}"><img class="w-10 absolute bottom-1"
+              src="/images/carrito.png" alt="cart"></a> --}}
+          {{/if}}
+
+        </ul>
+      </nav>
+    </section>
+
+    <section>
+      {{#if isAuthenticated}}
+      <button class="text-white hover:text-yellow-200 duration-300"><a class="inline-block w-24 h-10 px-2 py-2"
+          href="/login">Login</a></button>
+      <button class="text-white hover:text-yellow-200 duration-300"><a class="inline-block w-24 h-10 px-2 py-2"
+          href="/signup">Sign Up</a></button>
+      {{/if}}
+    </section>
+
+
+  </header>
+
+  <section>{{{body}}}</section>
+</body>
+
+</html>

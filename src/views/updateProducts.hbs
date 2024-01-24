@@ -1,0 +1,96 @@
+<section class="bg-slate-100 w-full mt-20 px-6flex flex-wrap justify-between">
+  <form method="post" class="w-5/12 p-5 bottom-30 right-3 fixed">
+    <fieldset class="bg-white w-full border border-slate-900 rounded-md flex flex-col items-center p-5 gap-2">
+      <legend class="text-2xl">Actualizar o eliminar productos</legend>
+      <section class="w-full text-center">
+        <section class="w-full border border-slate-900 rounded-md flex flex-col p-5 gap-2">
+          <h2 class="text-2xl text-center mb-10 border-b-2 border-gray-500">Campo a actualizar</h2>
+          <section>
+            <label for="idProductForm" class="flex justify-between items-center uppercase font-bold">id
+              <input disabled id="idProductForm" type="text" name="idProduct" placeholder="example: idProduct..." class="cursor-pointer text-slate-500 w-2/3 px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+              focus:outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700
+              ">
+            </label>
+          </section>
+          <section>
+            <label for="title" class="flex justify-between items-center uppercase font-bold">titulo
+              <input id="title" type="text" name="title" placeholder="example: title..." class="w-2/3 px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+              focus:outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700
+              ">
+            </label>
+          </section>
+          <section>
+            <label for="description" class="flex justify-between items-center uppercase font-bold">descripción
+              <input id="description" type="text" name="description" placeholder="example: descripton..." class="w-2/3 px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+              focus:outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700
+              ">
+            </label>
+          </section>
+          <section>
+            <label for="code" class="flex justify-between items-center uppercase font-bold">codigo
+              <input id="code" type="text" name="code" placeholder="example: code.." class="w-2/3 px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+              focus:outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700
+              ">
+            </label>
+          </section>
+          <section>
+            <label for="price" class="flex justify-between items-center uppercase font-bold">precio
+              <input id="price" type="number" name="price" placeholder="example: price..." class="w-2/3 px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+              focus:outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700
+              ">
+            </label>
+          </section>
+          <section>
+            <label for="status" class="flex justify-between items-center uppercase font-bold">estado
+              <input id="status" disabled type="text" name="status" placeholder="example: true..." class="cursor-pointer text-slate-500 w-2/3 px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+              focus:outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700
+              ">
+            </label>
+          </section>
+          <section>
+            <label for="stock" class="flex justify-between items-center uppercase font-bold">catidad
+              <input id="stock" type="number" name="stock" placeholder="example: stock.." class="w-2/3 px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+              focus:outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700
+              ">
+            </label>
+          </section>
+          <section>
+            <label for="category" class="flex justify-between items-center uppercase font-bold">categoria
+              <input id="category" type="text" name="category" placeholder="example: category.." class="w-2/3 px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+              focus:outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700
+              ">
+            </label>
+          </section>
+        </section>
+      </section>
+
+      <button id="submit"
+        class="text-center text-white border border-slate-300 rounded-md w-full px-5 py-2 bg-slate-900 cursor-pointer hover:bg-slate-600 duration-300">
+        Enviar
+      </button>
+    </fieldset>
+  </form>
+
+  <div class="w-6/12 flex flex-wrap items-center justify-around p-4 mt-4">
+    {{#each payload}}
+    <div class="bg-white w-5/12 h-96 px-2 mx-2 mb-2 border border-slate-400 rounded flex flex-wrap items-center justify-center">
+      <ul class="p-4">
+        <li class="text-lg font-bold"><span>{{title}}</span></li>
+        <li class="text-lg font-bold"><span>{{category}}</span></li>
+        <li class="text-lg font-bold"><span>{{stock}}</span></li>
+      </ul>
+      <button
+        class="update-product text-center text-white border border-slate-300 rounded-md w-full px-5 py-2 bg-slate-900 cursor-pointer hover:bg-slate-600 duration-300"
+        data-product-id="{{_id}}">Actualizar</button>
+      <button
+        class="delete-product text-white border border-slate-300 rounded-md w-full mt-2 mb-2 px-5 py-2 bg-red-900 cursor-pointer hover:bg-slate-600 duration-300"
+        data-product-id="{{_id}}">Eliminar</button>
+    </div>
+    {{/each}}
+  </div>
+</section>
+
+{{!-- instancia del socket del cliente --}}
+<script src="/socket.io/socket.io.js"></script>
+{{!-- referenciamos en index.js en el index.hbs --}}
+<script src="/js/updateProducts.js"></script>
