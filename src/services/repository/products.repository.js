@@ -4,6 +4,9 @@ class ProductRepository {
   constructor(productService) {
     this.productRepository = productService;
   }
+  findAll = () => {
+    return this.productRepository.findAll();
+  };
 
   paginate = (obj) => {
     return this.productRepository.paginate(obj);

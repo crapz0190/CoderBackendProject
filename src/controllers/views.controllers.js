@@ -23,6 +23,7 @@ class ViewsControllers {
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
+    const rolePremium = role === "premium";
 
     try {
       const getMessages = await messageRepository.findAll();
@@ -32,6 +33,7 @@ class ViewsControllers {
         cart,
         roleAdmin,
         roleUser,
+        rolePremium,
       });
     } catch (e) {
       CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
@@ -45,6 +47,7 @@ class ViewsControllers {
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
+    const rolePremium = role === "premium";
 
     try {
       const messages = await messageRepository.findById(mid);
@@ -58,6 +61,7 @@ class ViewsControllers {
         cart,
         roleAdmin,
         roleUser,
+        rolePremium,
       });
     } catch (e) {
       CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
@@ -74,6 +78,7 @@ class ViewsControllers {
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
+    const rolePremium = role === "premium";
 
     try {
       const products = await productRepository.paginate(req.query);
@@ -106,6 +111,7 @@ class ViewsControllers {
         cart,
         roleAdmin,
         roleUser,
+        rolePremium,
       });
     } catch (e) {
       CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
@@ -118,12 +124,14 @@ class ViewsControllers {
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
+    const rolePremium = role === "premium";
 
     try {
       return res.render("formProducts", {
         title: "Upload products | Handlebars",
         roleAdmin,
         roleUser,
+        rolePremium,
         cart,
       });
     } catch (e) {
@@ -140,6 +148,7 @@ class ViewsControllers {
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
+    const rolePremium = role === "premium";
 
     try {
       const product = await productRepository.findById(pid);
@@ -162,6 +171,7 @@ class ViewsControllers {
         cart,
         roleAdmin,
         roleUser,
+        rolePremium,
       });
     } catch (e) {
       CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
@@ -174,6 +184,7 @@ class ViewsControllers {
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
+    const rolePremium = role === "premium";
 
     try {
       const products = await productRepository.paginate(req.query);
@@ -194,6 +205,7 @@ class ViewsControllers {
         payload,
         roleAdmin,
         roleUser,
+        rolePremium,
         cart,
       });
     } catch (e) {
@@ -306,9 +318,11 @@ class ViewsControllers {
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
+    const rolePremium = role === "premium";
     res.render("successful", {
       roleAdmin,
       roleUser,
+      rolePremium,
     });
   };
 
@@ -324,6 +338,7 @@ class ViewsControllers {
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
+    const rolePremium = role === "premium";
 
     try {
       const cartFound = await cartRepository.findById(cid);
@@ -359,6 +374,7 @@ class ViewsControllers {
           products: productsData,
           roleAdmin,
           roleUser,
+          rolePremium,
         });
       } else {
         return res.render("cart", {

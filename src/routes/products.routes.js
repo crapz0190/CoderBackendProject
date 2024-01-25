@@ -9,37 +9,37 @@ const router = Router();
 router.get(
   "/",
   authMiddleware(["user", "admin"]),
-  productController.allProducts
+  productController.allProducts,
 );
 
 // ruta GET para encontrar productos por ID
 router.get(
   "/:pid",
   authMiddleware(["user", "admin"]),
-  productController.productById
+  productController.productById,
 );
 
 // ruta POST para crear productos
 router.post(
   "/add",
-  authMiddleware(["admin"]),
+  authMiddleware(["admin", "premium"]),
   upload.array("thumbnails", 5),
-  productController.addProduct
+  productController.addProduct,
 );
 
 // ruta PUT para actualizar productos por ID
 router.put(
   "/:pid",
-  authMiddleware(["admin"]),
+  authMiddleware(["admin", "premium"]),
   upload.array("thumbnails", 5),
-  productController.updateProductById
+  productController.updateProductById,
 );
 
 // ruta DELETE para eliminar un producto por ID
 router.delete(
   "/:pid",
-  authMiddleware(["admin"]),
-  productController.removeProductById
+  authMiddleware(["admin", "premium"]),
+  productController.removeProductById,
 );
 
 export default router;

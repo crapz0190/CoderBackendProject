@@ -7,7 +7,7 @@ const router = Router();
 
 router.get(
   "/current",
-  authMiddleware(["user", "admin"]),
+  authMiddleware(["user", "admin", "premium"]),
   sessionController.access,
 );
 

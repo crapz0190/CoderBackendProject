@@ -39,6 +39,19 @@ const productSchema = new Schema({
       type: String,
     },
   ],
+  owner: [
+    {
+      idUser: {
+        type: Schema.Types.ObjectId,
+        ref: "Users",
+      },
+      role: {
+        type: String,
+        default: "admin",
+      },
+      _id: false,
+    },
+  ],
 });
 
 productSchema.plugin(paginate);

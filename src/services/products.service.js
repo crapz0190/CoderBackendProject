@@ -1,6 +1,11 @@
 import { productsDAO } from "../dao/products.dao.js";
 
 class ProductService {
+  findAll = async () => {
+    const products = await productsDAO.getAll();
+    return products;
+  };
+
   paginate = async (obj) => {
     const products = await productsDAO.paginate(obj);
     return products;

@@ -33,7 +33,7 @@ router.get("/products", viewController.listProducts);
 // ruta GET para mostrar formulario de carga de productos
 router.get(
   "/product-upload-form",
-  authMiddleware(["admin"]),
+  authMiddleware(["admin", "premium"]),
   viewController.productsLoading,
 );
 
@@ -43,7 +43,7 @@ router.get("/product-detail/:pid", viewController.productDetail);
 // ruta GET para actualizar productos
 router.get(
   "/update-product",
-  authMiddleware(["admin"]),
+  authMiddleware(["admin", "premium"]),
   viewController.updateProduct,
 );
 
