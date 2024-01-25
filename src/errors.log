@@ -38,3 +38,13 @@
   level: 'error',
   timestamp: '2024-01-15T18:58:15.230Z'
 }
+{
+  message: "You don't have permission to delete this product",
+  level: 'fatal',
+  timestamp: '2024-01-25T04:15:16.740Z'
+}
+{
+  message: "You don't have permission to delete this product",
+  level: 'fatal',
+  timestamp: '2024-01-25T06:44:08.620Z'
+}

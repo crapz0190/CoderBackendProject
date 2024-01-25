@@ -7,6 +7,29 @@ import CustomError from "../errors/errors.generator.js";
 import { ErrorsMessages } from "../errors/errors.messages.js";
 
 class ViewsControllers {
+  userRole = async (req, res) => {
+    const { _id, role, cart } = req.user;
+    console.log(role);
+
+    const roleAdmin = role === "admin";
+    const roleUser = role === "user";
+    const rolePremium = role === "premium";
+
+    try {
+      return res.render("updateUserRole", {
+        title: "Update user role | Handlebars",
+        roleAdmin,
+        roleUser,
+        rolePremium,
+        userRoleId: _id,
+        role,
+        cart,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   home = async (req, res) => {
     try {
       return res.render("layouts/main", {
@@ -19,7 +42,7 @@ class ViewsControllers {
 
   // Metodo GET para visualizar mensages
   listMessages = async (req, res) => {
-    const { cart, role } = req.user;
+    const { cart, role, _id } = req.user;
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
@@ -34,6 +57,8 @@ class ViewsControllers {
         roleAdmin,
         roleUser,
         rolePremium,
+        role,
+        userRoleId: _id,
       });
     } catch (e) {
       CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
@@ -43,7 +68,7 @@ class ViewsControllers {
   // ruta GET para enviar actualizacion de los mensages
   renderEditMessage = async (req, res) => {
     const { mid } = req.params;
-    const { cart, role } = req.user;
+    const { cart, role, _id } = req.user;
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
@@ -62,6 +87,8 @@ class ViewsControllers {
         roleAdmin,
         roleUser,
         rolePremium,
+        role,
+        userRoleId: _id,
       });
     } catch (e) {
       CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
@@ -74,7 +101,7 @@ class ViewsControllers {
       return res.redirect("/login");
     }
 
-    const { first_name, email, cart, role } = req.user;
+    const { first_name, email, cart, role, _id } = req.user;
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
@@ -112,6 +139,8 @@ class ViewsControllers {
         roleAdmin,
         roleUser,
         rolePremium,
+        userRoleId: _id,
+        role,
       });
     } catch (e) {
       CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
@@ -120,7 +149,7 @@ class ViewsControllers {
 
   // Metodo GET para mostrar formulario de carga de productos
   productsLoading = (req, res) => {
-    const { cart, role } = req.user;
+    const { cart, role, _id } = req.user;
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
@@ -133,6 +162,8 @@ class ViewsControllers {
         roleUser,
         rolePremium,
         cart,
+        role,
+        userRoleId: _id,
       });
     } catch (e) {
       CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
@@ -144,7 +175,8 @@ class ViewsControllers {
     const { pid } = req.params;
     const cartFound = await cartRepository.findById(req.user.cart);
     const idCart = cartFound._id;
-    const { cart, role } = req.user;
+    const { cart, role, _id } = req.user;
+    const userRoleId = _id;
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
@@ -172,6 +204,8 @@ class ViewsControllers {
         roleAdmin,
         roleUser,
         rolePremium,
+        role,
+        userRoleId,
       });
     } catch (e) {
       CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
@@ -180,7 +214,7 @@ class ViewsControllers {
 
   // Metodo GET para actualizar productos
   updateProduct = async (req, res) => {
-    const { cart, role } = req.user;
+    const { cart, role, _id } = req.user;
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
@@ -207,6 +241,8 @@ class ViewsControllers {
         roleUser,
         rolePremium,
         cart,
+        role,
+        userRoleId: _id,
       });
     } catch (e) {
       CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
@@ -334,7 +370,7 @@ class ViewsControllers {
     }
 
     const { cid } = req.params;
-    const { role } = req.user;
+    const { role, _id } = req.user;
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
@@ -375,6 +411,8 @@ class ViewsControllers {
           roleAdmin,
           roleUser,
           rolePremium,
+          role,
+          userRoleId: _id,
         });
       } else {
         return res.render("cart", {

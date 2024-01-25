@@ -14,6 +14,7 @@ import cartsRouter from "../routes/carts.routes.js";
 import messagesRouter from "../routes/messages.routes.js";
 import sessionsRouter from "../routes/sessions.routes.js";
 import { productRepository } from "../services/repository/products.repository.js";
+import { userRepository } from "../services/repository/users.repository.js";
 import { createServer } from "node:http";
 import { Server as SocketServer } from "socket.io";
 import methodOverride from "method-override";
@@ -59,7 +60,7 @@ app.use("/", viewsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/messages", messagesRouter);
-app.use("/api/sessions", sessionsRouter);
+app.use("/api/users", sessionsRouter);
 
 app.use(errorMiddleware);
 
@@ -83,7 +84,24 @@ io.on("connection", (socketServer) => {
 
   socketServer.on("idDeleteProducts", async (data) => {
     const pid = data.productId;
-    const deleteProduct = await productRepository.deleteOne(pid);
-    socketServer.emit("loadListProducts", deleteProduct);
+    const foundProduct = await productRepository.findById(pid);
+    const roleOwner = foundProduct.owner.find((item) => item.idUser);
+
+    const user = await userRepository.findById(roleOwner.idUser);
+
+    if (!foundProduct._id) {
+      logger.warning("Product not found");
+    } else {
+      const userRole = user.role;
+      if (
+        userRole === "admin" ||
+        (userRole === "premium" && roleOwner.role === "premium")
+      ) {
+        const deleteProduct = await productRepository.deleteOne(pid);
+        socketServer.emit("loadListProducts", deleteProduct);
+      } else if (userRole === "premium" && roleOwner.role === "admin") {
+        logger.fatal("You don't have permission to delete this product");
+      }
+    }
   });
 });

@@ -10,9 +10,14 @@ v20.11.0
 <<< npm run start:prod >>>
 
 
----------------- Endpoint para probar todos logs ---------------
+---------------- Endpoint - permite actualizar role de usuario ---------------
 
-http://localhost:8080/loggerTest
+http://localhost:8080/premium/:iud
+
+
+---------------- Endpoint - permite restablecer la contraseña ---------------
+
+http://localhost:8080/forgot-password"
 
 
 ---------------- La pagina inicia en LOGIN ---------------

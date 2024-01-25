@@ -46,7 +46,7 @@ socketClient.on("loadListProducts", (data) => {
       status.value,
       code.value,
       stock.value,
-      category.value
+      category.value,
     );
 
     location.reload();
@@ -63,7 +63,7 @@ const updateList = (
   status,
   code,
   stock,
-  category
+  category,
 ) => {
   socketClient.emit("updateListProducts", {
     idProductForm,

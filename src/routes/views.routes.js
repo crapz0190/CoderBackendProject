@@ -4,6 +4,8 @@ import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
+router.get("/premium/:uid", viewController.userRole);
+
 router.get("/home", viewController.home);
 
 // ruta GET para visualizar login

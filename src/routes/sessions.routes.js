@@ -5,6 +5,8 @@ import passport from "passport";
 
 const router = Router();
 
+router.put("/premium/:uid", sessionController.userRole);
+
 router.get(
   "/current",
   authMiddleware(["user", "admin", "premium"]),

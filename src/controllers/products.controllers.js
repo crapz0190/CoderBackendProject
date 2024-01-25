@@ -143,20 +143,16 @@ class ProductController {
             .json({ status: "error", message: "Product not found" });
         }
 
-        const products = await productRepository.findAll();
-        const verifyCode = products.findIndex((item) => item.code === obj.code);
-
-        // agregar validacion del mismo code para que lo acepte
-
-        if (verifyCode === -1) {
-          const updateProduct = await productRepository.updateOne(pid, obj);
-          return res.status(200).json({ status: "success", updateProduct });
-        } else {
-          return res
-            .status(404)
-            .json({ status: "error", message: "Repeated code" });
-        }
+        const updateProduct = await productRepository.updateOne(pid, obj);
+        return res.status(200).json({ status: "success", updateProduct });
       }
+      /** 
+        const products = await productRepository.findAll();
+        const verifyCode = products.findIndex((item) => item.code === obj.code)
+
+        if (verifyCode === -1) {}
+
+      */
     } catch (e) {
       CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
     }
@@ -167,9 +163,9 @@ class ProductController {
     const { pid } = req.params;
     try {
       const foundProduct = await productRepository.findById(pid);
-      console.log(foundProduct);
+      const roleOwner = foundProduct.owner.find((item) => item.idUser);
 
-      if (!foundProduct) {
+      if (!foundProduct._id) {
         // CustomError.generateError(ErrorsMessages.NOT_FOUND, 404);
         return res
           .status(404)
@@ -178,13 +174,11 @@ class ProductController {
         const userRole = req.user.role;
         if (
           userRole === "admin" ||
-          (userRole === "premium" && foundProduct.owner === "premium")
+          (userRole === "premium" && roleOwner.role === "premium")
         ) {
-          console.log("Producto eliminado");
-
-          // const removeProduct = await productRepository.deleteOne(pid);
-          // return res.status(200).json({ status: "success", removeProduct });
-        } else {
+          const removeProduct = await productRepository.deleteOne(pid);
+          return res.status(200).json({ status: "success", removeProduct });
+        } else if (userRole === "premium" && roleOwner.role === "admin") {
           return res.status(403).json({
             status: "error",
             message: "You don't have permission to delete this product",

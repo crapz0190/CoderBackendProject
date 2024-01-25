@@ -19,6 +19,9 @@
             {{#if roleUser}}
               <li
                 class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"
+              ><a href="/premium/{{userRoleId}}">Role User</a></li>
+              <li
+                class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"
               ><a href="/products">Productos</a></li>
               <li
                 class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"
@@ -40,6 +43,9 @@
             {{#if roleAdmin}}
               <li
                 class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"
+              ><a href="/premium/{{userRoleId}}">Role User</a></li>
+              <li
+                class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"
               ><a href="/products">Productos</a></li>
               {{! <li class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"><a href="/messages-form">mensajes</a></li> }}
               <li
@@ -48,8 +54,6 @@
               <li
                 class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"
               ><a href="/update-product">Modificacion de productos</a></li>
-              {{!-- <a class="inline-block w-32 h-10 px-2 py-2" href="/carts/{{cart}}"><img class="w-10 absolute bottom-1"
-              src="/images/carrito.png" alt="cart"></a> --}}
             {{/if}}
 
           </ul>
@@ -60,6 +64,9 @@
             {{#if rolePremium}}
               <li
                 class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"
+              ><a href="/premium/{{userRoleId}}">Role User</a></li>
+              <li
+                class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"
               ><a href="/products">Productos</a></li>
               {{! <li class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"><a href="/messages-form">mensajes</a></li> }}
               <li
@@ -68,8 +75,6 @@
               <li
                 class="uppercase pt-2 pb-2 px-4 text-center h-9 hover:text-yellow-200"
               ><a href="/update-product">Modificacion de productos</a></li>
-              {{!-- <a class="inline-block w-32 h-10 px-2 py-2" href="/carts/{{cart}}"><img class="w-10 absolute bottom-1"
-              src="/images/carrito.png" alt="cart"></a> --}}
             {{/if}}
 
           </ul>

@@ -8,6 +8,35 @@ import { env } from "../utils/config.js";
 import { v4 as uuidv4 } from "uuid";
 
 class SessionController {
+  // Metodo PUT permite cambiar de usuario ("user", "premium" or "admin")
+  userRole = async (req, res) => {
+    const { uid } = req.params;
+    const { role } = req.body;
+
+    try {
+      const user = await userRepository.findById(uid);
+      if (!user) {
+        return res
+          .status(404)
+          .json({ status: "error", message: "User not found" });
+      }
+
+      // user.role = user.role === "admin" ? "premium" : "admin";
+      user.role = role;
+      await user.save();
+
+      return res.status(200).json({
+        status: "success",
+        message: "User role updated successfully",
+      });
+    } catch (e) {
+      console.error("Error al cambiar el rol del usuario", error);
+      return res
+        .status(500)
+        .json({ status: "error", message: "Error interno del servidor" });
+    }
+  };
+
   // Metodo GET permite desde un boton cerrar sesion
   destroySession = (req, res) => {
     try {
@@ -34,7 +63,7 @@ class SessionController {
   // Metodo POST permite el ingreso del usuario a su cuenta
   loginUser = (req, res) => {
     try {
-      res.redirect("/api/sessions/current");
+      res.redirect("/api/users/current");
     } catch (e) {
       return res.status(500).json({ status: "error", message: e.message });
     }
@@ -80,6 +109,7 @@ class SessionController {
   // ruta POST permite enviar correro para restaurar contraseña
   emailRestorePass = async (req, res) => {
     const { email } = req.body;
+    const EXPIRATION_TIME = Date.now() + 3600000; // 1 hora de duración
 
     try {
       const user = await userRepository.findByEmail(email);
@@ -89,7 +119,7 @@ class SessionController {
 
       const resetToken = uuidv4();
       user.resetToken = resetToken;
-      user.resetTokenExpiration = Date.now() + 3600000; // 1 hora de duración
+      user.resetTokenExpiration = EXPIRATION_TIME;
       await user.save();
 
       const resetLink = `${env.URL}:${env.PORT}/reset-password/${resetToken}`;
