@@ -4,95 +4,79 @@ import { ErrorsMessages } from "../errors/errors.messages.js";
 
 class MessageController {
   // Metodo GET para mostrar todos los mensajes
-  listMessages = async (req, res) => {
+  listMessages = async (req, res, next) => {
     try {
       const messages = await messageRepository.findAll();
       if (!messages) {
         CustomError.generateError(ErrorsMessages.NOT_FOUND, 404);
-
-        // return res
-        //   .status(404)
-        //   .json({ status: "error", message: "Messages not found" });
       } else {
         return res
           .status(200)
           .json({ status: "Message list", payload: messages });
       }
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo GET para mostrar todos los mensajes
-  messageById = async (req, res) => {
+  messageById = async (req, res, next) => {
     const { mid } = req.params;
     try {
       const messages = await messageRepository.findById(mid);
       if (!messages) {
         CustomError.generateError(ErrorsMessages.NOT_FOUND, 404);
-
-        // return res
-        //   .status(404)
-        //   .json({ status: "error", message: "Messages not found" });
       } else {
         return res
           .status(200)
           .json({ status: "Message found", payload: messages });
       }
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo POST para crear mensages
-  createMessages = async (req, res) => {
+  createMessages = async (req, res, next) => {
     const obj = req.body;
     const { email, description } = obj;
 
-    if (!email || !description) {
-      CustomError.generateError(ErrorsMessages.BAD_REQUEST, 400);
-
-      // return res
-      //   .status(400)
-      //   .json({ status: "error", message: "All field are required" });
-    }
-
     try {
+      if (!email || !description) {
+        CustomError.generateError(ErrorsMessages.BAD_REQUEST, 400);
+      }
+
       const messageCreated = await messageRepository.createOne(obj);
       return res
         .status(200)
         .json({ status: "Created", payload: messageCreated });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo PUT para actualizar mensages
-  updateMessages = async (req, res) => {
+  updateMessages = async (req, res, next) => {
     const { mid } = req.params;
     const obj = req.body;
     const { email, description } = obj;
 
-    if (!email || !description) {
-      CustomError.generateError(ErrorsMessages.BAD_REQUEST, 400);
-
-      // return res
-      //   .status(400)
-      //   .json({ status: "error", message: "All field are required" });
-    }
-
     try {
+      if (!email || !description) {
+        CustomError.generateError(ErrorsMessages.BAD_REQUEST, 400);
+      }
+
       const messageUpdated = await messageRepository.updateOne(mid, obj);
       return res
         .status(200)
         .json({ status: "Updated", payload: messageUpdated });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo DELETE para eliminar mensages
-  deleteMessages = async (req, res) => {
+  deleteMessages = async (req, res, next) => {
     const { mid } = req.params;
 
     try {
@@ -101,7 +85,7 @@ class MessageController {
         .status(200)
         .json({ status: "Deleted", payload: messageRemoved });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 }

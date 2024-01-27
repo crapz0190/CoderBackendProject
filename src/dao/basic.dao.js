@@ -1,3 +1,6 @@
+import CustomError from "../errors/errors.generator.js";
+import { ErrorsMessages } from "../errors/errors.messages.js";
+
 export default class BasicDAO {
   constructor(model, populateProps) {
     this.model = model;
@@ -8,7 +11,7 @@ export default class BasicDAO {
       const response = await this.model.find();
       return response;
     } catch (error) {
-      throw error;
+      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
     }
   }
   async getById(id) {
@@ -18,7 +21,7 @@ export default class BasicDAO {
         .populate(this.populateProps);
       return response;
     } catch (error) {
-      throw error;
+      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
     }
   }
   async createOne(obj) {
@@ -26,7 +29,7 @@ export default class BasicDAO {
       const response = await this.model.create(obj);
       return response;
     } catch (error) {
-      throw error;
+      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
     }
   }
   async updateOne(id, obj) {
@@ -34,7 +37,7 @@ export default class BasicDAO {
       const response = await this.model.findByIdAndUpdate(id, obj);
       return response;
     } catch (error) {
-      throw error;
+      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
     }
   }
   async deleteOne(id) {
@@ -42,7 +45,7 @@ export default class BasicDAO {
       const response = await this.model.findByIdAndDelete(id);
       return response;
     } catch (error) {
-      throw error;
+      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
     }
   }
 }

@@ -1,6 +1,7 @@
 import { usersModel } from "../models/users.model.js";
 import BasicDAO from "./basic.dao.js";
-import { compareData } from "../utils/config.js";
+import CustomError from "../errors/errors.generator.js";
+import { ErrorsMessages } from "../errors/errors.messages.js";
 
 class UserDAO extends BasicDAO {
   constructor() {
@@ -12,7 +13,7 @@ class UserDAO extends BasicDAO {
       const response = await usersModel.findOne({ email });
       return response;
     } catch (error) {
-      throw error;
+      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
     }
   }
 
@@ -21,7 +22,7 @@ class UserDAO extends BasicDAO {
       const response = await usersModel.findOne(obj);
       return response;
     } catch (error) {
-      throw error;
+      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
     }
   }
 }

@@ -1,6 +1,8 @@
 import { productsModel } from "../models/products.model.js";
 import BasicDAO from "./basic.dao.js";
 import { env } from "../utils/config.js";
+import CustomError from "../errors/errors.generator.js";
+import { ErrorsMessages } from "../errors/errors.messages.js";
 
 class ProductsDAO extends BasicDAO {
   constructor() {
@@ -23,7 +25,7 @@ class ProductsDAO extends BasicDAO {
         sort,
         lean: true,
       });
-      // console.log(result);
+
       const info = {
         status: "success",
         payload: result.docs,
@@ -42,7 +44,7 @@ class ProductsDAO extends BasicDAO {
       };
       return info;
     } catch (error) {
-      throw error;
+      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
     }
   }
 }

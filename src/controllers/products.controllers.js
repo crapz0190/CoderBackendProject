@@ -4,46 +4,38 @@ import { ErrorsMessages } from "../errors/errors.messages.js";
 
 class ProductController {
   // Metodo GET para mostrar productos por paginado
-  allProducts = async (req, res) => {
+  allProducts = async (req, res, next) => {
     try {
       const allProducts = await productRepository.paginate(req.query);
       if (allProducts.length === 0) {
         CustomError.generateError(ErrorsMessages.NOT_FOUND, 404);
-
-        // return res
-        //   .status(404)
-        //   .json({ status: "error", message: "Products not found" });
       } else {
         return res.status(200).json({ payload: allProducts });
       }
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo GET para encontrar productos por ID
-  productById = async (req, res) => {
+  productById = async (req, res, next) => {
     const { pid } = req.params;
     try {
       const productById = await productRepository.findById(pid);
       if (!productById) {
-        CustomError.generateError(ErrorsMessages.NOT_FOUND, 404);
-
-        // return res
-        //   .status(404)
-        //   .json({ status: "error", message: "Product not found" });
+        CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
       } else {
         return res
           .status(200)
           .json({ status: "success", payload: productById });
       }
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo POST para crear productos
-  addProduct = async (req, res) => {
+  addProduct = async (req, res, next) => {
     try {
       const obj = req.body;
       const files = req.files.map((file) => file.filename);
@@ -95,14 +87,12 @@ class ProductController {
         }
       }
     } catch (e) {
-      console.error("error al crear el producto", e);
-
-      // CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo PUT para actualizar productos por ID
-  updateProductById = async (req, res) => {
+  updateProductById = async (req, res, next) => {
     try {
       const { pid } = req.params;
       const obj = req.body;
@@ -154,12 +144,12 @@ class ProductController {
 
       */
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo DELETE para eliminar un producto por ID
-  removeProductById = async (req, res) => {
+  removeProductById = async (req, res, next) => {
     const { pid } = req.params;
     try {
       const foundProduct = await productRepository.findById(pid);
@@ -186,9 +176,7 @@ class ProductController {
         }
       }
     } catch (e) {
-      return res
-        .status(500)
-        .json({ status: "error", message: "Internal server error" });
+      next(e);
     }
   };
 }

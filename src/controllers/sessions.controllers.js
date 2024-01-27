@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 
 class SessionController {
   // Metodo PUT permite cambiar de usuario ("user", "premium" or "admin")
-  userRole = async (req, res) => {
+  userRole = async (req, res, next) => {
     const { uid } = req.params;
     const { role } = req.body;
 
@@ -30,47 +30,44 @@ class SessionController {
         message: "User role updated successfully",
       });
     } catch (e) {
-      console.error("Error al cambiar el rol del usuario", error);
-      return res
-        .status(500)
-        .json({ status: "error", message: "Error interno del servidor" });
+      next(e);
     }
   };
 
   // Metodo GET permite desde un boton cerrar sesion
-  destroySession = (req, res) => {
+  destroySession = (req, res, next) => {
     try {
       return req.session.destroy(() => {
         res.redirect("/login");
       });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo POST permite registrarse en la DB
-  access = async (req, res) => {
+  access = async (req, res, next) => {
     try {
       const user = await userRepository.findByEmail(req.user.email);
       const userDTO = new UserResCurrent(user);
       console.log("USER DTO ---> ", userDTO);
       return res.redirect("/products");
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo POST permite el ingreso del usuario a su cuenta
-  loginUser = (req, res) => {
+  loginUser = (req, res, next) => {
     try {
       res.redirect("/api/users/current");
     } catch (e) {
-      return res.status(500).json({ status: "error", message: e.message });
+      next(e);
     }
   };
 
   // Metodo POST permite restaurar contraseña
-  restorePassword = async (req, res) => {
+  restorePassword = async (req, res, next) => {
     const { token, newPassword, confirmPassword } = req.body;
 
     try {
@@ -102,12 +99,12 @@ class SessionController {
         return res.status(400).json({ message: "Passwords do not match" });
       }
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // ruta POST permite enviar correro para restaurar contraseña
-  emailRestorePass = async (req, res) => {
+  emailRestorePass = async (req, res, next) => {
     const { email } = req.body;
     const EXPIRATION_TIME = Date.now() + 3600000; // 1 hora de duración
 
@@ -154,11 +151,11 @@ class SessionController {
         res.send("Email Enviado");
       });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
-  resetPasswordToken = async (req, res) => {
+  resetPasswordToken = async (req, res, next) => {
     const { token } = req.params;
 
     try {
@@ -173,7 +170,7 @@ class SessionController {
 
       res.render("restore", { token });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 

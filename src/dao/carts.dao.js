@@ -1,5 +1,7 @@
 import { cartsModel } from "../models/carts.model.js";
 import BasicDAO from "./basic.dao.js";
+import CustomError from "../errors/errors.generator.js";
+import { ErrorsMessages } from "../errors/errors.messages.js";
 
 class CartsDAO extends BasicDAO {
   constructor() {
@@ -12,7 +14,7 @@ class CartsDAO extends BasicDAO {
       const createCart = await cartsModel.create(newCart);
       return createCart;
     } catch (error) {
-      throw error;
+      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
     }
   }
 
@@ -34,7 +36,7 @@ class CartsDAO extends BasicDAO {
       }
       return cart.save();
     } catch (error) {
-      throw error;
+      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
     }
   }
 
@@ -51,7 +53,7 @@ class CartsDAO extends BasicDAO {
         console.error("Producto no encontrado en el carrito");
       }
     } catch (error) {
-      throw error;
+      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
     }
   }
 }

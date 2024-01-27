@@ -15,7 +15,7 @@ router.get(
 // ruta GET para encontrar productos por ID
 router.get(
   "/:pid",
-  authMiddleware(["user", "admin"]),
+  // authMiddleware(["user", "admin"]),
   productController.productById,
 );
 

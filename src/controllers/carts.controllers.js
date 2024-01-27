@@ -8,43 +8,36 @@ import { nanoid } from "nanoid";
 
 class CartController {
   // Metodo GET para mostrar todos los carritos
-  allCarts = async (req, res) => {
+  allCarts = async (req, res, next) => {
     try {
       const allCarts = await cartRepository.findAll();
       if (allCarts.length === 0) {
         CustomError.generateError(ErrorsMessages.NOT_FOUND, 404);
-        // return res
-        //   .status(404)
-        //   .json({ status: "error", message: "Carts not found" });
       } else {
         return res.status(200).json({ status: "success", payload: allCarts });
       }
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo GET para encontrar carrito por ID
-  cartById = async (req, res) => {
+  cartById = async (req, res, next) => {
     const { cid } = req.params;
     try {
       const cartById = await cartRepository.findById(cid);
       if (!cartById) {
         CustomError.generateError(ErrorsMessages.NOT_FOUND, 404);
-
-        // return res
-        //   .status(404)
-        //   .json({ status: "error", message: "Cart not found" });
       } else {
         return res.status(200).json({ status: "success", payload: cartById });
       }
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo POST para finalizar el proceso de compra
-  purchasingProcess = async (req, res) => {
+  purchasingProcess = async (req, res, next) => {
     const { cid } = req.params;
     const idUser = req.user._id;
 
@@ -116,35 +109,32 @@ class CartController {
 
       return res.status(200).json({ message: "Successful purchase", ticket });
     } catch (e) {
-      console.error("Error before generating the ticket:", e);
-      return res.status(500).json({ error: e.message });
+      // console.error("Error before generating the ticket:", e);
+      next(e);
     }
   };
 
   // Metodo POST para crear un carrito
-  createCart = async (req, res) => {
+  createCart = async (req, res, next) => {
     try {
       const createCart = await cartRepository.createOne();
       return res.status(200).json({ status: "success", payload: createCart });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo PUT para agregar productos a un carrito
-  updateCart = async (req, res) => {
+  updateCart = async (req, res, next) => {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
     const userId = req.user._id;
 
-    if (typeof cid !== "string" || typeof pid !== "string") {
-      CustomError.generateError(ErrorsMessages.BAD_REQUEST, 400);
-
-      // return res
-      //   .status(400)
-      //   .json({ status: "error", message: "Invalid input data" });
-    }
     try {
+      if (typeof cid !== "string" || typeof pid !== "string") {
+        CustomError.generateError(ErrorsMessages.BAD_REQUEST, 400);
+      }
+
       const updateCart = await cartRepository.updateCart(
         cid,
         pid,
@@ -153,43 +143,36 @@ class CartController {
       );
       return res.status(200).json({ status: "success", payload: updateCart });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo DELETE para eliminar un carrito
-  removeCart = async (req, res) => {
+  removeCart = async (req, res, next) => {
     const { cid } = req.params;
 
-    const foundId = await cartRepository.findById(cid);
-    if (!foundId) {
-      CustomError.generateError(ErrorsMessages.NOT_FOUND, 404);
-
-      // return res
-      //   .status(404)
-      //   .json({ status: "error", message: "Cart not found" });
-    }
-
     try {
+      const foundId = await cartRepository.findById(cid);
+      if (!foundId) {
+        CustomError.generateError(ErrorsMessages.NOT_FOUND, 404);
+      }
+
       const removeCart = await cartRepository.deleteOne(cid);
       return res.status(200).json({ status: "success", payload: removeCart });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo DELETE para eliminar un  producto del carrito
-  removeProductByCart = async (req, res) => {
+  removeProductByCart = async (req, res, next) => {
     const { cid, pid } = req.params;
 
-    if (typeof cid !== "string" || typeof pid !== "string") {
-      CustomError.generateError(ErrorsMessages.BAD_REQUEST, 400);
-
-      // return res
-      //   .status(400)
-      //   .json({ status: "error", message: "Invalid input data" });
-    }
     try {
+      if (typeof cid !== "string" || typeof pid !== "string") {
+        CustomError.generateError(ErrorsMessages.BAD_REQUEST, 400);
+      }
+
       const removeProductByCart = await cartRepository.deleteProductByCart(
         cid,
         pid,
@@ -199,7 +182,7 @@ class CartController {
         payload: removeProductByCart,
       });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 }

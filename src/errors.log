@@ -48,3 +48,23 @@
   level: 'fatal',
   timestamp: '2024-01-25T06:44:08.620Z'
 }
+{
+  level: 'fatal',
+  message: 'statusCode',
+  timestamp: '2024-01-26T19:19:44.057Z'
+}
+{
+  level: 'fatal',
+  message: 'errorMessage',
+  timestamp: '2024-01-26T19:19:44.060Z'
+}
+{
+  level: 'fatal',
+  message: 'statusCode',
+  timestamp: '2024-01-26T19:19:51.499Z'
+}
+{
+  level: 'fatal',
+  message: 'errorMessage',
+  timestamp: '2024-01-26T19:19:51.499Z'
+}

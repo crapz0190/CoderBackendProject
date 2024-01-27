@@ -7,7 +7,7 @@ import CustomError from "../errors/errors.generator.js";
 import { ErrorsMessages } from "../errors/errors.messages.js";
 
 class ViewsControllers {
-  userRole = async (req, res) => {
+  userRole = async (req, res, next) => {
     const { _id, role, cart } = req.user;
     console.log(role);
 
@@ -26,22 +26,22 @@ class ViewsControllers {
         cart,
       });
     } catch (e) {
-      console.error(e);
+      next(e);
     }
   };
 
-  home = async (req, res) => {
+  home = async (req, res, next) => {
     try {
       return res.render("layouts/main", {
         title: "Home | Handlebars",
       });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo GET para visualizar mensages
-  listMessages = async (req, res) => {
+  listMessages = async (req, res, next) => {
     const { cart, role, _id } = req.user;
 
     const roleAdmin = role === "admin";
@@ -61,14 +61,17 @@ class ViewsControllers {
         userRoleId: _id,
       });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // ruta GET para enviar actualizacion de los mensages
-  renderEditMessage = async (req, res) => {
+  renderEditMessage = async (req, res, next) => {
     const { mid } = req.params;
-    const { cart, role, _id } = req.user;
+    const user = req.user;
+    const cart = user.cart;
+    const role = user.role;
+    const userRoleId = user._id;
 
     const roleAdmin = role === "admin";
     const roleUser = role === "user";
@@ -76,27 +79,32 @@ class ViewsControllers {
 
     try {
       const messages = await messageRepository.findById(mid);
-      const { _id, email, description } = messages;
 
-      return res.render("updateMessages", {
-        title: "Update Form | Handlebars",
-        _id,
-        email,
-        description,
-        cart,
-        roleAdmin,
-        roleUser,
-        rolePremium,
-        role,
-        userRoleId: _id,
-      });
+      if (!messages) {
+        CustomError.generateError(ErrorsMessages.NOT_FOUND, 404);
+      } else {
+        const { _id, email, description } = messages;
+
+        return res.render("updateMessages", {
+          title: "Update Form | Handlebars",
+          _id,
+          email,
+          description,
+          cart,
+          roleAdmin,
+          roleUser,
+          rolePremium,
+          role,
+          userRoleId,
+        });
+      }
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo GET para mostrar productos
-  listProducts = async (req, res) => {
+  listProducts = async (req, res, next) => {
     if (!req.session.passport) {
       return res.redirect("/login");
     }
@@ -143,12 +151,12 @@ class ViewsControllers {
         role,
       });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo GET para mostrar formulario de carga de productos
-  productsLoading = (req, res) => {
+  productsLoading = (req, res, next) => {
     const { cart, role, _id } = req.user;
 
     const roleAdmin = role === "admin";
@@ -166,23 +174,24 @@ class ViewsControllers {
         userRoleId: _id,
       });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo GET para mostrar detalles del producto seleccionado
-  productDetail = async (req, res) => {
+  productDetail = async (req, res, next) => {
     const { pid } = req.params;
-    const cartFound = await cartRepository.findById(req.user.cart);
-    const idCart = cartFound._id;
-    const { cart, role, _id } = req.user;
-    const userRoleId = _id;
-
-    const roleAdmin = role === "admin";
-    const roleUser = role === "user";
-    const rolePremium = role === "premium";
-
     try {
+      const cartFound = await cartRepository.findById(req.user.cart);
+      const idCart = cartFound._id;
+      const user = req.user;
+      const userRoleId = user._id;
+      const cart = user.cart;
+      const role = user.role;
+
+      const roleAdmin = role === "admin";
+      const roleUser = role === "user";
+      const rolePremium = role === "premium";
       const product = await productRepository.findById(pid);
       const thumbnailsData = product.thumbnails.map(
         (thumbnail) => `/images/${thumbnail}`,
@@ -208,12 +217,12 @@ class ViewsControllers {
         userRoleId,
       });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo GET para actualizar productos
-  updateProduct = async (req, res) => {
+  updateProduct = async (req, res, next) => {
     const { cart, role, _id } = req.user;
 
     const roleAdmin = role === "admin";
@@ -245,12 +254,12 @@ class ViewsControllers {
         userRoleId: _id,
       });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo GET para visualizar login
-  login = (req, res) => {
+  login = (req, res, next) => {
     if (req.session.passport) {
       return res.redirect("/products");
     }
@@ -263,12 +272,12 @@ class ViewsControllers {
         isAuthenticated,
       });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo GET para visualizar signup
-  signup = (req, res) => {
+  signup = (req, res, next) => {
     if (req.session.passport) {
       return res.redirect("/products");
     }
@@ -281,12 +290,12 @@ class ViewsControllers {
         isAuthenticated,
       });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // ruta GET permite enviar correro para restaurar contraseña
-  emailRestorePassword = (req, res) => {
+  emailRestorePassword = (req, res, next) => {
     const isAuthenticated = req.user === undefined;
 
     try {
@@ -295,14 +304,14 @@ class ViewsControllers {
         isAuthenticated,
       });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
-  resetPasswordToken = async (req, res) => {
+  resetPasswordToken = async (req, res, next) => {
     const { token } = req.params;
     const isAuthenticated = req.user === undefined;
-    // res.render("restore", { token });
+
     try {
       const user = await userRepository.findToken({
         resetToken: token,
@@ -319,11 +328,11 @@ class ViewsControllers {
         isAuthenticated,
       });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
-  expiredLink = (req, res) => {
+  expiredLink = (req, res, next) => {
     const isAuthenticated = req.user === undefined;
 
     try {
@@ -332,34 +341,41 @@ class ViewsControllers {
         isAuthenticated,
       });
     } catch (e) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 
   // Metodo GET para mostrar error
-  failureRedirect = (req, res) => {
+  failureRedirect = (req, res, next) => {
     const isAuthenticated = req.user === undefined;
-
-    const message = req.session.messages[0];
-    res.render("error", {
-      title: "Error | Handlebars",
-      message: message,
-      isAuthenticated,
-    });
+    try {
+      const message = req.session.messages[0];
+      res.render("error", {
+        title: "Error | Handlebars",
+        message: message,
+        isAuthenticated,
+      });
+    } catch (e) {
+      next(e);
+    }
   };
 
   // Metodo GET para visualizar creacion exitosa del producto
-  successfulCreation = (req, res) => {
+  successfulCreation = (req, res, next) => {
     const { role } = req.user;
 
-    const roleAdmin = role === "admin";
-    const roleUser = role === "user";
-    const rolePremium = role === "premium";
-    res.render("successful", {
-      roleAdmin,
-      roleUser,
-      rolePremium,
-    });
+    try {
+      const roleAdmin = role === "admin";
+      const roleUser = role === "user";
+      const rolePremium = role === "premium";
+      res.render("successful", {
+        roleAdmin,
+        roleUser,
+        rolePremium,
+      });
+    } catch (e) {
+      next(e);
+    }
   };
 
   // Metodo GET para visualizar carrito de productos
@@ -421,7 +437,7 @@ class ViewsControllers {
         });
       }
     } catch (error) {
-      CustomError.generateError(ErrorsMessages.INTERNAL_SERVER_ERROR, 500);
+      next(e);
     }
   };
 }
