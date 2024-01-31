@@ -9,6 +9,9 @@ v20.11.0
           o
 <<< npm run start:prod >>>
 
+---------------- Endpoint - permite ver documentación API ---------------
+
+http://localhost:8080/api/docs
 
 ---------------- Endpoint - permite actualizar role de usuario ---------------
 
