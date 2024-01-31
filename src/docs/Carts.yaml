@@ -1,0 +1,305 @@
+paths:
+  /api/carts:
+    get:
+      summary: Get all carts
+      tags:
+        - Carts
+      parameters:
+        - name: Role admin
+          description: User must have administrator role
+      responses:
+        "200":
+          description: All carts
+        "400":
+          description: Some data is missing
+        "403":
+          description: Some data is missing
+        "500":
+          description: Server error
+  /api/carts/{cid}:
+    get:
+      summary: Get carts by id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          description: Cart identifier
+        - name: Role User
+          description: User must have user role
+      responses:
+        "200":
+          description: Cart found
+          content:
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Carts"
+              example:
+                id: fs2WdfsTf6gaf9D84fa
+                user: GeU6sTf8Uhaf9DdfEa
+                products:
+                  [
+                    { product: gTWj82hfpIen2R5htb0s, quantity: 4 },
+                    { product: gT5Eg52hg5Ien2R5wb4v, quantity: 6 },
+                  ]
+        "400":
+          description: Some data is missing
+        "500":
+          description: Server error
+    delete:
+      summary: Delete carts by id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          description: Cart identifier
+        - name: Role admin
+          description: User must have administrator role
+      requestBody:
+        content:
+          application/json:
+            schemas:
+              $ref: "#components/requestBodies/deleteCarts"
+            example:
+              user: GeU6sTf8Uhaf9DdfEa
+              products: []
+      responses:
+        "200":
+          description: Cart deleted
+          content:
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Carts"
+              example:
+                id: fs2WdfsTf6gaf9D84fa
+                user: GeU6sTf8Uhaf9DdfEa
+                products: []
+        "400":
+          description: Some data is missing
+        "500":
+          description: Server error
+  /api/carts/add:
+    post:
+      summary: Create cart
+      tags:
+        - Carts
+      parameters:
+        - name: Role admin
+          description: User must have administrator role
+      requestBody:
+        content:
+          application/json:
+            schemas:
+              $ref: "#components/requestBodies/createCarts"
+            example:
+              user: GeU6sTf8Uhaf9DdfEa
+              products: []
+      responses:
+        "200":
+          description: Created cart
+          content:
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Carts"
+              example:
+                id: fs2WdfsTf6gaf9D84fa
+                user: GeU6sTf8Uhaf9DdfEa
+                products: []
+        "400":
+          description: Some data is missing
+        "403":
+          description: Some data is missing
+        "500":
+          description: Server error
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Create Purchasing Process
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          description: Cart identifier
+        - name: Role user
+          description: User must have user role
+      requestBody:
+        content:
+          application/json:
+            schemas:
+              $ref: "#components/requestBodies/createPurchasingProcess"
+            example:
+              code: FZMvr97xTQ
+              purchase_datetime": 2024-01-31T17:15:26.023Z
+              amount: 234870
+              purchaser: purchase_receipt@gmail.com,
+      responses:
+        "200":
+          description: Created cart
+          content:
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Carts"
+              example:
+                id: 65ba80a13bfbcb59a0902794
+                code: FZMvr97xTQ
+                purchase_datetime: 2024-01-31T17:15:26.023Z
+                amount: 234870
+                purchaser: purchase_receipt@gmail.com,
+        "400":
+          description: Some data is missing
+        "500":
+          description: Server error
+  /api/carts/{cid}/product/{pid}:
+    put:
+      summary: Update cart
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          description: Cart identifier
+        - name: pid
+          in: path
+          description: Product identifier
+        - name: Role admintrator
+          description: User must have administrator role
+      requestBody:
+        content:
+          application/json:
+            schemas:
+              $ref: "#components/requestBodies/updateCarts"
+            example:
+              user: GeU6sTf8Uhaf9DdfEa
+              products:
+                [
+                  { product: gTWj82hfpIen2R5htb0s, quantity: 5 },
+                  { product: gT5Eg52hg5Ien2R5wb4v, quantity: 1 },
+                  { product: gT5Eg52hg5Ien2R5wb4v, quantity: 3 },
+                ]
+      responses:
+        "200":
+          description: Update cart
+          content:
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Carts"
+              example:
+                id: fs2WdfsTf6gaf9D84fa
+                user: GeU6sTf8Uhaf9DdfEa
+                products:
+                  [
+                    { product: gTWj82hfpIen2R5htb0s, quantity: 5 },
+                    { product: gT5Eg52hg5Ien2R5wb4v, quantity: 1 },
+                    { product: gT5Eg52hg5Ien2R5wb4v, quantity: 3 },
+                  ]
+        "400":
+          description: Some data is missing
+        "500":
+          description: Server error
+    delete:
+      summary: Delete product from cart
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          description: Cart identifier
+        - name: Role user
+          description: User must have user role
+      requestBody:
+        content:
+          application/json:
+            schemas:
+              $ref: "#components/requestBodies/deleteCarts"
+            example:
+              user: GeU6sTf8Uhaf9DdfEa
+              products:
+                [
+                  { product: gTWj82hfpIen2R5htb0s, quantity: 5 },
+                  { product: gT5Eg52hg5Ien2R5wb4v, quantity: 1 },
+                ]
+      responses:
+        "200":
+          description: Delete cart
+          content:
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Carts"
+              example:
+                id: fs2WdfsTf6gaf9D84fa
+                user: GeU6sTf8Uhaf9DdfEa
+                products:
+                  [
+                    { product: gTWj82hfpIen2R5htb0s, quantity: 5 },
+                    { product: gT5Eg52hg5Ien2R5wb4v, quantity: 1 },
+                  ]
+        "400":
+          description: Some data is missing
+        "500":
+          description: Server error
+
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        id:
+          type: string
+        user:
+          type: string
+        products:
+          properties:
+            product:
+              type: string
+            quantity:
+              type: number
+  requestBodies:
+    deleteCarts:
+      type: object
+      properties:
+        id:
+          type: string
+        user:
+          type: string
+        products:
+          properties:
+            product:
+              type: string
+            quantity:
+              type: number
+    createCarts:
+      type: object
+      properties:
+        id:
+          type: string
+        user:
+          type: string
+        products:
+          type: array
+    createPurchasingProcess:
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        purchase_datatime:
+          type: date
+        amount:
+          type: number
+        purchaser:
+          type: string
+    updateCarts:
+      type: object
+      properties:
+        id:
+          type: string
+        user:
+          type: string
+        products:
+          properties:
+            product:
+              type: string
+            quantity:
+              type: number

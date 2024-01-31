@@ -20,6 +20,8 @@ import { Server as SocketServer } from "socket.io";
 import methodOverride from "method-override";
 import { errorMiddleware } from "../middlewares/error.middlewares.js";
 import { logger } from "../utils/logger.js";
+import { swaggerSetup } from "../utils/swagger.js";
+import swaggerUi from "swagger-ui-express";
 
 const app = express();
 const server = createServer(app);
@@ -61,6 +63,8 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/messages", messagesRouter);
 app.use("/api/users", sessionsRouter);
+// Swagger
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSetup));
 
 app.use(errorMiddleware);
 

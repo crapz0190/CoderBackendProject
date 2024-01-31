@@ -1,0 +1,367 @@
+paths:
+  /api/products:
+    get:
+      summary: Get all products
+      tags:
+        - Products
+      responses:
+        "200":
+          description: All products
+        "400":
+          description: Some data is missing
+        "500":
+          description: Server error
+  /api/products?limit={limit}&page={page}&order={order}&category={category}:
+    get:
+      summary: Get pagination products
+      tags:
+        - Products
+      parameters:
+        - name: limit
+          in: path
+          description: Quantity of products per page
+        - name: page
+          in: path
+          description: Page number
+        - name: order
+          in: path
+          description: Sort page ascending or descending (asc=1 or desc=-1)
+        - name: category
+          in: path
+          description: Pagination by category
+      responses:
+        "200":
+          description: Products found
+          content:
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Products"
+              example:
+                [
+                  {
+                    id: fs2WdfsTf6gaf9D84fa,
+                    title: title_1,
+                    description: description_1,
+                    code: codo_1,
+                    price: 234560,
+                    status: true,
+                    stock: 34,
+                    category: tecnologia,
+                    thumbnails: 89c38bba-b828-43ea-9b3b-66b87b19976e.webp,
+                    owner: { idUser: gTWj82hfpIen2R5htb0s, role: admin },
+                  },
+                  {
+                    id: fE5rEWdegdfg4D84bT,
+                    title: title_2,
+                    description: description_2,
+                    code: codo_2,
+                    price: 64560,
+                    status: true,
+                    stock: 9,
+                    category: tecnologia,
+                    thumbnails: e4cb8536-f5dc-48c9-8a71-727ebc0fe95c.webp,
+                    owner: { idUser: gTWj82hfpIen2R5htb0s, role: admin },
+                  },
+                  {
+                    id: GhdfsTfGD8e3f9DkO,
+                    title: title_3,
+                    description: description_3,
+                    code: codo_3,
+                    price: 34560,
+                    status: true,
+                    stock: 17,
+                    category: tecnologia,
+                    thumbnails: r6cb78b6-g9dc-78cr-8ad5-345ebc0fe95c.webp,
+                    owner: { idUser: gTWj82hfpIen2R5htb0s, role: admin },
+                  },
+                ]
+
+        "400":
+          description: Some data is missing
+        "500":
+          description: Server error
+  /api/products/{pid}:
+    get:
+      summary: Get products by id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          description: Product identifier
+      responses:
+        "200":
+          description: Product found
+          content:
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Products"
+              example:
+                id: fs2WdfsTf6gaf9D84fa
+                title: title_1
+                description: description_1
+                code: codo_1
+                price: 234560
+                status: true
+                stock: 34
+                category: category_1
+                thumbnails: img.jpg
+                owner:
+                  idUser: gTWj82hfpIen2R5htb0s
+                  role: user
+        "400":
+          description: Some data is missing
+        "500":
+          description: Server error
+    put:
+      summary: Update products by id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          description: Product identifier
+      requestBody:
+        content:
+          application/json:
+            schemas:
+              $ref: "#components/requestBodies/updateProducts"
+            example:
+              title: title_update
+              description: description_update
+              code: codo_update
+              price: 234560
+              status: true
+              stock: 34
+              category: category_update
+              thumbnails: img-2.jpg
+              owner:
+                idUser: gTWj82hfpIen2R5htb0s
+                role: premium
+
+      responses:
+        "200":
+          description: Product updated
+          content:
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Products"
+              example:
+                id: fs2WdfsTf6gaf9D84fa
+                title: title_update
+                description: description_update
+                code: codo_update
+                price: 234560
+                status: true
+                stock: 34
+                category: category_update
+                thumbnails: img-2.jpg
+                owner:
+                  idUser: gTWj82hfpIen2R5htb0s
+                  role: premium
+        "400":
+          description: Some data is missing
+        "500":
+          description: Server error
+    delete:
+      summary: Delete products by id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          description: Product identifier
+      requestBody:
+        content:
+          application/json:
+            schemas:
+              $ref: "#components/requestBodies/deleteProducts"
+            example:
+              title: title_1
+              description: description_1
+              code: codo_1
+              price: 234560
+              status: true
+              stock: 34
+              category: category_1
+              thumbnails: img-2.jpg
+              owner:
+                idUser: gTWj82hfpIen2R5htb0s
+                role: admin
+
+      responses:
+        "200":
+          description: Product deleted
+          content:
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Products"
+              example:
+                id: fs2WdfsTf6gaf9D84fa
+                title: title_1
+                description: description_1
+                code: codo_1
+                price: 234560
+                status: true
+                stock: 34
+                category: category_1
+                thumbnails: img-2.jpg
+                owner:
+                  idUser: gTWj82hfpIen2R5htb0s
+                  role: admin
+        "400":
+          description: Some data is missing
+        "500":
+          description: Server error
+  /api/products/add:
+    post:
+      summary: Create product
+      tags:
+        - Products
+      requestBody:
+        content:
+          application/json:
+            schemas:
+              $ref: "#components/requestBodies/createProducts"
+            example:
+              title: title_1
+              description: description_1
+              code: codo_1
+              price: 234560
+              status: true
+              stock: 34
+              category: category_1
+              thumbnails: img-1.jpg
+              owner:
+                idUser: gT3j82typIenHy6htb0er3
+                role: admin
+
+      responses:
+        "200":
+          description: Created product
+          content:
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Products"
+              example:
+                id: gDerW3dfsTB4tyh4Iop9
+                title: title_1
+                description: description_1
+                code: codo_1
+                price: 234560
+                status: true
+                stock: 34
+                category: category_1
+                thumbnails: img-1.jpg
+                owner:
+                  idUser: gT3j82typIenHy6htb0er3
+                  role: admin
+        "400":
+          description: Some data is missing
+        "500":
+          description: Server error
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        code:
+          type: string
+        price:
+          type: number
+        status:
+          type: boolean
+        stock:
+          type: number
+        category:
+          type: string
+        thumbnails:
+          type: string
+        owner:
+          properties:
+            idUser:
+              type: string
+            role:
+              type: string
+  requestBodies:
+    updateProducts:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        code:
+          type: string
+        price:
+          type: number
+        status:
+          type: boolean
+        stock:
+          type: number
+        category:
+          type: string
+        thumbnails:
+          type: string
+        owner:
+          properties:
+            idUser:
+              type: string
+            role:
+              type: string
+    createProducts:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        code:
+          type: string
+        price:
+          type: number
+        status:
+          type: boolean
+        stock:
+          type: number
+        category:
+          type: string
+        thumbnails:
+          type: string
+        owner:
+          properties:
+            idUser:
+              type: string
+            role:
+              type: string
+    deleteProducts:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        code:
+          type: string
+        price:
+          type: number
+        status:
+          type: boolean
+        stock:
+          type: number
+        category:
+          type: string
+        thumbnails:
+          type: string
+        owner:
+          properties:
+            idUser:
+              type: string
+            role:
+              type: string

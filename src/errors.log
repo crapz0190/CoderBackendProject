@@ -68,3 +68,18 @@
   message: 'errorMessage',
   timestamp: '2024-01-26T19:19:51.499Z'
 }
+{
+  message: 'Error al conectarse a la DB de Mongo',
+  level: 'fatal',
+  timestamp: '2024-01-31T17:08:50.389Z'
+}
+{
+  message: 'Error al conectarse a la DB de Mongo',
+  level: 'fatal',
+  timestamp: '2024-01-31T17:08:58.285Z'
+}
+{
+  message: 'Error al conectarse a la DB de Mongo',
+  level: 'fatal',
+  timestamp: '2024-01-31T17:14:17.915Z'
+}
